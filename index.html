@@ -486,11 +486,15 @@
                 isPlaying = !state.paused;
                 document.getElementById('playBtn').textContent = isPlaying ? '⏸' : '▶';
 
-                // Mostrar letras después de 5 segundos de reproducción
-                if (isPlaying && !lyricsShown && currentPosition > 5000) {
-                    lyricsShown = true;
-                    document.getElementById('lyricsBox').classList.add('show');
-                    document.getElementById('status').style.display = 'none';
+                // Mostrar letras después de 3 segundos de reproducción
+                if (isPlaying && !lyricsShown) {
+                    setTimeout(() => {
+                        if (!lyricsShown) {
+                            lyricsShown = true;
+                            document.getElementById('lyricsBox').classList.add('show');
+                            document.getElementById('status').style.display = 'none';
+                        }
+                    }, 3000); // 3 segundos después de dar al play
                 }
 
                 // Actualizar barra de progreso
