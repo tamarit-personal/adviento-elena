@@ -231,10 +231,9 @@
 
         .lyrics-divider {
             border: none;
-            border-top: 3px solid #667eea;
-            margin: 30px auto;
-            width: 60%;
-            box-shadow: 0 2px 5px rgba(102, 126, 234, 0.3);
+            border-top: 2px solid #ccc;
+            margin: 20px 0;
+            width: 80%;
         }
         
 
@@ -530,6 +529,8 @@
             player.connect();
         }
 
+        let hasStartedPlaying = false;
+
         function setupControls(token) {
             document.getElementById('playBtn').addEventListener('click', () => {
                 if (!deviceId) return;
@@ -537,18 +538,23 @@
                 if (isPlaying) {
                     player.pause();
                 } else {
-                    // Si es la primera vez, transferir reproducción y cargar la canción
-                    fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        },
-                        body: JSON.stringify({
-                            uris: [TRACK_URI]
-                        })
-                    });
-                    player.resume();
+                    // Solo hacer el fetch la primera vez para cargar la canción
+                    if (!hasStartedPlaying) {
+                        hasStartedPlaying = true;
+                        fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `Bearer ${token}`
+                            },
+                            body: JSON.stringify({
+                                uris: [TRACK_URI]
+                            })
+                        });
+                    } else {
+                        // Si ya ha empezado, solo reanudar
+                        player.resume();
+                    }
                 }
             });
 
@@ -601,4 +607,3 @@
     </script>
 </body>
 </html>
-
