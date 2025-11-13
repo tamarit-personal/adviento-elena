@@ -506,7 +506,6 @@
                 isPlaying = !state.paused;
                 document.getElementById('playBtn').textContent = isPlaying ? '⏸' : '▶';
 
-                // Mostrar letras a los 87 segundos
                 if (isPlaying && !lyricsShown && currentPosition >= 10000) {
                     lyricsShown = true;
                     document.getElementById('lyricsBox').classList.add('show');
@@ -576,6 +575,11 @@
             stopPositionTracking();
             positionInterval = setInterval(() => {
                 currentPosition += 1000;
+                if (isPlaying && !lyricsShown && currentPosition >= 10000) {
+                    lyricsShown = true;
+                    document.getElementById('lyricsBox').classList.add('show');
+                    document.getElementById('status').style.display = 'none';
+                }
                 if (currentPosition > duration) currentPosition = duration;
                 updateProgressBar();
             }, 1000);
