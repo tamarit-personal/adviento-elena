@@ -509,7 +509,6 @@
                 if (isPlaying && !lyricsShown && currentPosition >= 10000) {
                     lyricsShown = true;
                     document.getElementById('lyricsBox').classList.add('show');
-                    document.getElementById('status').style.display = 'none';
                 }
 
                 // Actualizar barra de progreso
@@ -534,6 +533,9 @@
                 if (isPlaying) {
                     player.pause();
                 } else {
+                    // Ocultar el mensaje de status cuando se pulse play
+                    document.getElementById('status').style.display = 'none';
+
                     // Solo hacer el fetch la primera vez para cargar la canción
                     if (!hasStartedPlaying) {
                         hasStartedPlaying = true;
@@ -578,7 +580,6 @@
                 if (isPlaying && !lyricsShown && currentPosition >= 10000) {
                     lyricsShown = true;
                     document.getElementById('lyricsBox').classList.add('show');
-                    document.getElementById('status').style.display = 'none';
                 }
                 if (currentPosition > duration) currentPosition = duration;
                 updateProgressBar();
