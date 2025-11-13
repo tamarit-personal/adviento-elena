@@ -493,15 +493,9 @@
                 isPlaying = !state.paused;
                 document.getElementById('playBtn').textContent = isPlaying ? '⏸' : '▶';
 
-                // Mostrar letras después de 3 segundos de reproducción
-                if (isPlaying && !lyricsShown) {
-                    setTimeout(() => {
-                        if (!lyricsShown) {
-                            lyricsShown = true;
-                            document.getElementById('lyricsBox').classList.add('show');
-                            document.getElementById('status').style.display = 'none';
-                        }
-                    }, 1000); // 3 segundos después de dar al play
+                if (isPlaying && !lyricsShown && currentPosition >= 19000) {
+                    lyricsShown = true;
+                    document.getElementById('lyricsBox').classList.add('show');
                 }
 
                 // Actualizar barra de progreso
@@ -526,6 +520,7 @@
                 if (isPlaying) {
                     player.pause();
                 } else {
+                    document.getElementById('status').style.display = 'none';
                     // Solo hacer el fetch la primera vez para cargar la canción
                     if (!hasStartedPlaying) {
                         hasStartedPlaying = true;
@@ -567,6 +562,10 @@
             stopPositionTracking();
             positionInterval = setInterval(() => {
                 currentPosition += 1000;
+                if (isPlaying && !lyricsShown && currentPosition >= 19000) {
+                    lyricsShown = true;
+                    document.getElementById('lyricsBox').classList.add('show');
+                }
                 if (currentPosition > duration) currentPosition = duration;
                 updateProgressBar();
             }, 1000);
